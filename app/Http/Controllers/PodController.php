@@ -10,10 +10,7 @@ use Carbon\Carbon;
 
 class PodController extends Controller
 {
-    // public function create()
-    // {
-    //     return view('createPod'); // Create a Blade template for the form
-    // }
+
     public function create()
     {
         return view('createPod');
@@ -43,11 +40,18 @@ class PodController extends Controller
         return view('AllPods', compact('pods'));
     }
 
+    // public function AvailablePods()
+    // {
+    //     $pods = Pod::all();
+    //     $booking = Booking::all();
+    //     return view('AvailablePods', compact('pods'));
+    // }
     public function AvailablePods()
     {
-        
+        // Fetch all pods
         $pods = Pod::all();
-
+    
+        
         return view('AvailablePods', compact('pods'));
     }
 
@@ -98,7 +102,7 @@ class PodController extends Controller
         ->orderBy('start_time')
         ->first();
 
-        if ($nextAvailablePod) {
+        if ($nextAvailablePod and $pod->user_id == auth()->id()) {
             $booking = new Booking();
             $booking->user_id = auth()->id();
             $booking->pod_id = $nextAvailablePod->id;
@@ -116,9 +120,13 @@ class PodController extends Controller
         }
     }
 
+
     public function show($id)
     {
         $pod = Pod::findOrFail($id);
-        return view('podShow', compact('pod'));
+        $booking = Booking::where('pod_id', $pod->id)->first();
+        $bookedBy = $booking ? $booking->user : null;
+        return view('podShow', compact('pod', 'bookedBy'));
     }
+
 }

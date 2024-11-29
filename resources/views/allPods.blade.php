@@ -20,7 +20,8 @@
                                 <th class="px-4 py-2 border-b">Start Time</th>
                                 <th class="px-4 py-2 border-b">End Time</th>
                                 <th class="px-4 py-2 border-b">Status</th>
-                                {{-- <th class="px-4 py-2 border-b">Actions</th> --}}
+                                <th class="px-4 py-2 border-b">View</th>
+                                {{-- <th class="px-4 py-2 border-b">Action</th> --}}
                             </tr>
                         </thead>
                         <tbody>
@@ -32,7 +33,9 @@
                                     <td class="px-4 py-2 border-b">{{ $pod->start_time}}</td>
                                     <td class="px-4 py-2 border-b">{{ $pod->end_time}}</td>
                                     <td class="px-4 py-2 border-b">{{ $pod->status}}</td>
-                                    
+                                    @if($pod->status=='booked')
+                                    <td class="px-4 py-2 border-b"><a href="{{ route('pods.show', $pod->id) }}" class="text-red-500">View</a></td>
+                                    @endif
                                     {{-- <td class="px-4 py-2 border-b">
                                         <a href="{{ route('pods.delete', $pod->id) }}" class="text-red-500">Delete</a>
                                     </td> --}}
